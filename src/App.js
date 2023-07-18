@@ -9,10 +9,8 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 
-class App extends Component{
-  constructor(){
-    super();
-    this.state = {
+
+const initialState = {
       input:'',
       imageUrl:'',
       box: {},
@@ -25,7 +23,11 @@ class App extends Component{
         entries:0,
         joined: ''
       }
-    }
+}
+class App extends Component{
+  constructor(){
+    super();
+    this.state = initialState;
   }
 
   loadUser = (data) => {
@@ -64,7 +66,7 @@ class App extends Component{
 
   onRouteChange = (route) => {
     if(route === 'signout'){
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     }else if(route === 'home'){
       this.setState({isSignedIn: true})
     }
@@ -123,13 +125,14 @@ class App extends Component{
                             .then(count =>{
                               this.setState(Object.assign(this.state.user, {entries: count }))
                             })
+                            .catch(console.log())
                          }
 
                           this.displayFaceBox(this.calculateFaceLocation(result))
                         })
         .catch(error => console.log('error', error));
 
-       
+        
   
     /*app.models.predict("6dc7e46bc9124c5c8824be4822abe105","https://samples.clarifai.com/face-det.jpg").then(
       function(response){
